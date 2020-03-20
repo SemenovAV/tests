@@ -3,7 +3,7 @@ import unittest
 from io import StringIO
 from unittest.mock import patch
 
-import app
+from tools import app
 
 
 class TestsApp(unittest.TestCase):
