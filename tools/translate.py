@@ -1,7 +1,7 @@
 import requests
 
 
-def translate_it(text,from_lang, to_lang, api_key):
+def translate_it(text, from_lang, to_lang, api_key):
     """
     https://translate.yandex.net/api/v1.5/tr.json/translate ?
      & text=<переводимый текст>
@@ -24,6 +24,5 @@ def translate_it(text,from_lang, to_lang, api_key):
     }
 
     response = requests.get(URL, params=params)
-    json_ = response.json()
-    return ''.join(json_['text'])
+    return response.json()
 
