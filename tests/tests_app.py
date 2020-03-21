@@ -3,7 +3,8 @@ import unittest
 from io import StringIO
 from unittest.mock import patch
 
-from tools import app
+import app
+from tools.hidder import Hider
 
 
 class TestsApp(unittest.TestCase):
@@ -11,7 +12,8 @@ class TestsApp(unittest.TestCase):
         self.dirs, self.docs = app.update_date()
         with patch('app.update_date', return_value=(self.dirs, self.docs)):
             with patch('app.input', return_value='q'):
-                app.secretary_program_start()
+                with Hider():
+                    app.secretary_program_start()
 
     def test_delete(self):
         before_len = len(app.documents)
@@ -51,7 +53,8 @@ class TestsApp(unittest.TestCase):
     def test_move_doc_to_shelf(self):
         before_len = len(app.directories['3'])
         with patch('app.input', side_effect=['10006', '3']):
-            app.move_doc_to_shelf()
+            with Hider():
+                app.move_doc_to_shelf()
             self.assertGreater(len(app.directories['3']), before_len)
 
     def test_show_document_info(self):
@@ -88,9 +91,5 @@ class TestsApp(unittest.TestCase):
         doc_type = 'passport'
         owner_name = 'Аристарх Павлов'
         shelf_number = '1'
-        with patch('app.input', side_effect=[doc_number, doc_type, owner_name , shelf_number]):
+        with patch('app.input', side_effect=[doc_number, doc_type, owner_name, shelf_number]):
             self.assertEqual(app.add_new_doc(), shelf_number)
-
-
-if __name__ == '__main__':
-    unittest.main()
